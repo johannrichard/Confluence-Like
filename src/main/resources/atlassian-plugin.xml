@@ -7,11 +7,11 @@
         <param name="configure.url">/admin/statpro-ranking/config.action</param>
     </plugin-info>
 
-    <macro name='rank-this-page' class='com.unic.confluence.statpro.ranking.RankingMacro' key='rank-this-page'>
+    <macro name='rank-this-page' class='com.unic.confluence.like.RankingMacro' key='rank-this-page'>
         <description>Shows a rank-this-page.</description>
     </macro>
 
-    <macro name='top-ranked-pages' class='com.unic.confluence.statpro.ranking.RankingTopMacro' key='top-ranked-pages'>
+    <macro name='top-ranked-pages' class='com.unic.confluence.like.RankingTopMacro' key='top-ranked-pages'>
         <description>Outputs a message if "failed=true" appears in the URL.</description>
     </macro>
 
@@ -20,11 +20,11 @@
         <package name="statpro-ranking" extends="default" namespace="/statpro-ranking">
             <default-interceptor-ref name="defaultStack" />
 
-            <action name="rank" class="com.unic.confluence.statpro.ranking.RankingUnobtrusiveAction">
+            <action name="rank" class="com.unic.confluence.like.RankingUnobtrusiveAction">
                 <result name="success" type="velocity">/templates/ranking/rank.vm</result>
             </action>
 
-            <action name="rankMe" class="com.unic.confluence.statpro.ranking.RankingAction">
+            <action name="rankMe" class="com.unic.confluence.like.RankingAction">
                 <result name="success-xml" type="velocity-xml">/templates/ranking/result.xvm</result>
                 <result name="success-redirect" type="redirect">${@com.atlassian.confluence.util.GeneralUtil@getPageUrl(page)}</result>
             </action>
@@ -33,7 +33,7 @@
         <package name="statpro-ranking-admin" extends="default" namespace="/admin/statpro-ranking">
             <default-interceptor-ref name="defaultStack" />
 
-            <action name="config" class="com.unic.confluence.statpro.ranking.StatProRankingAction">
+            <action name="config" class="com.unic.confluence.like.StatProRankingAction">
                 <result name="input" type="velocity">/templates/ranking/config.vm</result>
                 <result name="error" type="velocity">/templates/ranking/config.vm</result>
                 <result name="success" type="redirect">config.action</result>

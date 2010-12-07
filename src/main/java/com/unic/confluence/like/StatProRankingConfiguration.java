@@ -1,4 +1,4 @@
-package com.unic.confluence.statpro.ranking;
+package com.unic.confluence.like;
 
 import java.util.HashMap;
 import java.util.Map;

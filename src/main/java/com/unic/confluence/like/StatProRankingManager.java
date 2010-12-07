@@ -1,4 +1,4 @@
-package com.unic.confluence.statpro.ranking;
+package com.unic.confluence.like;
 
 import com.atlassian.bandana.BandanaContext;
 import com.atlassian.bandana.BandanaManager;
