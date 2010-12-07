@@ -1,4 +1,4 @@
-package com.adaptavist.podcast;
+package com.unic.podcast;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

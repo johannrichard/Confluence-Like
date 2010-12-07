@@ -7,23 +7,23 @@
     <artifactId>ranking-plugin</artifactId>
     <packaging>atlassian-plugin</packaging>
 
-    <name>Ranking Plugin</name>
-    <version>1.2.1</version>
-    <url>http://www.adaptavist.com/</url>
+    <name>Like Plugin</name>
+    <version>0.1.1</version>
+    <url>http://www.unic.com/</url>
     <description><![CDATA[
-        Provides a macro for ranking pages with a 'was this page useful' style approach, tracking only positive answers - also providing a text box to allow users to supply a comment (regardless of positive or negative feedback) which is emailed to an address specified in the configuration.
+        Provides a macro for ranking pages with a 'Like' style approach, tracking only positive answers.
 
         Provides a macro for listing the top ranked pages within a space based on the positive answers over the last 30 days.
     ]]></description>
 
     <properties>
         <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
-        <atlassian.plugin.key>com.adaptavist.confluence.ranking</atlassian.plugin.key>
+        <atlassian.plugin.key>com.unic.confluence.like</atlassian.plugin.key>
     </properties>
 
     <organization>
-        <name>Adaptavist.com Ltd</name>
-        <url>http://www.adaptavist.com/</url>
+        <name>Unic AG</name>
+        <url>http://www.unic.com/</url>
     </organization>
 
     <developers>

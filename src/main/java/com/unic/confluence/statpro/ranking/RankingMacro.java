@@ -1,4 +1,4 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 import com.atlassian.confluence.pages.AbstractPage;
 import com.atlassian.confluence.renderer.PageContext;

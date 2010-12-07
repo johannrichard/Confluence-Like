@@ -37,12 +37,12 @@
 		color: #3B5998;
 		display: block;
 		padding-left: 17px;		
-		background: url($bootstrap.domainName/download/resources/com.adaptavist.confluence.ranking/like.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/like.png) no-repeat 0% -2px;
 	}
 	
 	.helpful.ranked .liked {
 		padding-left: 17px;		
-		background: url($bootstrap.domainName/download/resources/com.adaptavist.confluence.ranking/like.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/like.png) no-repeat 0% -2px;
 	}
 </style>
 

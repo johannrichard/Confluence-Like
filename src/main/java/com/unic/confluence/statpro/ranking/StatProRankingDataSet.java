@@ -1,4 +1,4 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 import java.util.HashMap;
 import java.util.Map;

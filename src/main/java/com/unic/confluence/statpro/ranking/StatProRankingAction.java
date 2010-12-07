@@ -1,4 +1,4 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;

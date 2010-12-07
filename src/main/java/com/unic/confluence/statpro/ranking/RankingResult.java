@@ -1,4 +1,4 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 public class RankingResult {
 

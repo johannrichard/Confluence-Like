@@ -1,4 +1,4 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 import com.atlassian.confluence.pages.actions.AbstractPageAction;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;

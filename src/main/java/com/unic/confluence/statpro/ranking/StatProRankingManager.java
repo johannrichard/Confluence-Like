@@ -1,11 +1,11 @@
-package com.adaptavist.confluence.statpro.ranking;
+package com.unic.confluence.statpro.ranking;
 
 import com.atlassian.bandana.BandanaContext;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.core.ListQuery;
 import com.atlassian.confluence.core.SmartListManager;
-import com.atlassian.confluence.core.ContentEntityObject
+import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.pages.AbstractPage;
 import com.atlassian.confluence.pages.Page;
 import com.atlassian.confluence.pages.PageManager;
@@ -32,7 +32,7 @@ public class StatProRankingManager {
     private static final int EXPIRY_IN_DAYS = 30;
     private static final int TOP_COUNT = 5;
     private static BandanaContext bandanaContext = new ConfluenceBandanaContext();
-    private static String bandanaKey = "com.adaptavist.confluence.statpro.ranking.StatProRankingManager";
+    private static String bandanaKey = "com.unic.confluence.like.LikeManager";
 
     private BandanaManager bandanaManager;
     private PageManager pageManager;
