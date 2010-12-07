@@ -134,7 +134,7 @@ public class StatProRankingManager {
             }
             for (String username : dataSet.getNegative().keySet()) {
                 int rankedAt = dataSet.getNegative().get(username);
-                if (rankedAt < expiresAt) deadKeys.add(username);
+                // if (rankedAt < expiresAt) deadKeys.add(username);
             }
             if (!deadKeys.isEmpty()) {
                 changed = true;
@@ -147,7 +147,7 @@ public class StatProRankingManager {
         }
     }
 	
-	public String rankingUsers(AbstractPage page) {
+	public String likeUserList(AbstractPage page) {
         String spaceKey = page.getSpaceKey();
         // Get the dataset for this space
         StatProRankingData data = getData(spaceKey, true);
@@ -177,7 +177,7 @@ public class StatProRankingManager {
 	    return builder.toString();
 	}
 	
-    public int rankingCount(AbstractPage page) {
+    public int likeCount(AbstractPage page) {
         String spaceKey = page.getSpaceKey();
         // Get the dataset for this space
         StatProRankingData data = getData(spaceKey, true);
@@ -207,7 +207,47 @@ public class StatProRankingManager {
 
     public boolean hasRanked(String username, StatProRankingDataSet dataSet) {
         // Check I've not already ranked this content
+        return dataSet.getPositive().containsKey(username) || dataSet.getNegative().containsKey(username);
+    }
+
+    public boolean hasLiked(AbstractPage page) {
+        String spaceKey = page.getSpaceKey();
+        // Get the dataset for this space
+        StatProRankingData data = getData(spaceKey, true);
+        StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
+        if (dataSet == null) {
+            dataSet = new StatProRankingDataSet();
+            dataSet.setEntityId( page.getId() );
+            data.getEntities().put(page.getId(), dataSet);
+        }
+        String username = AuthenticatedUserThreadLocal.getUsername();
+        // Check the ranking
+        return hasLiked(username, dataSet);
+    }
+
+    public boolean hasLiked(String username, StatProRankingDataSet dataSet) {
+        // Check I've not already ranked this content
         return dataSet.getPositive().containsKey(username);
+    }
+
+    public boolean hasDisliked(AbstractPage page) {
+        String spaceKey = page.getSpaceKey();
+        // Get the dataset for this space
+        StatProRankingData data = getData(spaceKey, true);
+        StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
+        if (dataSet == null) {
+            dataSet = new StatProRankingDataSet();
+            dataSet.setEntityId( page.getId() );
+            data.getEntities().put(page.getId(), dataSet);
+        }
+        String username = AuthenticatedUserThreadLocal.getUsername();
+        // Check the ranking
+        return hasDisliked(username, dataSet);
+    }
+
+    public boolean hasDisliked(String username, StatProRankingDataSet dataSet) {
+        // Check I've not already ranked this content
+        return dataSet.getNegative().containsKey(username);
     }
 
     public void rankContent(AbstractPage page, boolean positive) {
@@ -225,15 +265,59 @@ public class StatProRankingManager {
         // if (hasRanked(username, dataSet)) return;
         // Rank the page
         int dateNow = getDateNow();
-        if (positive && !dataSet.getPositive().containsKey(username)) {
-            dataSet.getPositive().put(username, dateNow);
-        } else if(dataSet.getPositive().containsKey(username)){
-            dataSet.getPositive().remove(username);
-        }
+        if (positive && dataSet.getNegative().containsKey(username) ) {
+            dataSet.getNegative().put(username, dateNow);
+	    }else if (positive && !dataSet.getPositive().containsKey(username) ) {
+	        dataSet.getPositive().remove( username );
+        } else if(!positive && dataSet.getPositive().containsKey(username) ) {
+            dataSet.getPositive().remove( username );
+        } else if(!positive && !dataSet.getNegative().containsKey(username) ) {
+			dataSet.getNegative().put(username, dateNow);
+		}
         // Save the data
         setData(spaceKey, data);
     }
 
+    public void rankContent(AbstractPage page, boolean like, boolean dislike) {
+        String spaceKey = page.getSpaceKey();
+        // Get the dataset for this space
+        StatProRankingData data = getData(spaceKey, true);
+        StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
+        if (dataSet == null) {
+            dataSet = new StatProRankingDataSet();
+            dataSet.setEntityId( page.getId() );
+            data.getEntities().put(page.getId(), dataSet);
+        }
+        // Check I've not already ranked this content
+        String username = AuthenticatedUserThreadLocal.getUsername();
+        // if (hasRanked(username, dataSet)) return;
+        // Rank the page
+        int dateNow = getDateNow();
+
+		// Reset like from negative view
+        if (like && dataSet.getNegative().containsKey(username) ) {
+            dataSet.getNegative().remove(username);
+	    } 
+		// Like 
+		if (like && !dataSet.getPositive().containsKey(username) ) {
+	        dataSet.getPositive().put(username, dateNow);
+        } 
+		// Reset dislike from positive view
+		if(dislike && dataSet.getPositive().containsKey(username) ) {
+            dataSet.getPositive().remove( username );
+        } 
+		// Dislike
+		if(dislike && !dataSet.getNegative().containsKey(username) ) {
+			dataSet.getNegative().put(username, dateNow);
+		}
+		// Reset anyhow
+		if(dislike && like) {
+            dataSet.getPositive().remove( username );
+            dataSet.getNegative().remove( username );
+		}
+        // Save the data
+        setData(spaceKey, data);
+    }
     public void sendFeedback(AbstractPage page, String feedback) {
         // Get configuration for the space key
         StatProRankingConfiguration config = getConfig(true);

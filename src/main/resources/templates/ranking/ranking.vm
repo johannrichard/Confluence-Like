@@ -1,26 +1,26 @@
 <style type="text/css">
-	.helpful.unranked {
+	.helpful {
 		display: block;
 	}
 	
-    .helpful.unranked a img {
+    .helpful a img {
         border: none;
     }
 
-    .helpful.unranked .feedback {
+    .helpful .feedback {
         border: 1px solid;
         padding: 10px 10px 10px 10px;
         margin: 0px 8%;
         margin-top: 10px;
     }
 
-    .helpful.unranked a {
+    .helpful a {
 		text-decoration: none;	
     }
 
-	.helpful.unranked a.button {
-		background-color: #ECEEF5;
-		border: 1px solid #CAD4E7;
+	.helpful a.button {
+		background-color: #ECECEC;
+		border: 1px solid #CACACA;
 		border-bottom-left-radius: 3px 3px;
 		border-bottom-right-radius: 3px 3px;
 		border-top-left-radius: 3px 3px;
@@ -33,38 +33,54 @@
 		font-size: 11px;
 	}
 	
-	.helpful.unranked a .liketext {
-		color: #3B5998;
+	.helpful a.button:hover {
+		background-color: #DADADA;
+	}
+
+	.helpful a.button.toggled {
+		background-color: #AAAAAA;
+		border-color: #777777;
+	}
+	
+	.helpful a .liketext {
+		color: #333333;
 		display: block;
 		padding-left: 17px;		
 		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/like.png) no-repeat 0% -2px;
 	}
 	
-	.helpful.ranked .liked {
-		padding-left: 17px;		
-		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/like.png) no-repeat 0% -2px;
+	.helpful a .disliketext {
+		color: #333333;
+		display: block;
+		padding-left: 15px;		
+		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/dislike.png) no-repeat 0% -2px;
+	}
+
+	.helpful a.button.toggled .liketext {
+		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/likegrey.png) no-repeat 0% -2px;
+	}
+	
+	.helpful a.button.toggled .disliketext {
+		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/dislikegrey.png) no-repeat 0% -2px;
 	}
 </style>
 
-#if (!$hasRanked)
-<div class="helpful unranked">
+<div class="helpful">
 	<table>
 		<tr>
-		    <td><a  class="button unliked" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;useful=true"><span class="liketext">Like</span></a>
+		    <td><a  class="button #if($hasLiked)toggled#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasLiked)like=true&amp;dislike=true#{else}like=true&amp;dislike=false#end"><span class="liketext">Like</span></a>
 			</td>
-    		<td>&nbsp;<a href="#" title="$rankingUsers">$rankingCount</a> of your peers #if( $rankingCount == 1)likes#{else}like#end this.</td>
+			<td><a class="button #if($hasDisliked)toggled#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasDisliked)like=true&amp;dislike=true#{else}like=false&amp;dislike=true#end"><span class="disliketext">&nbsp;</span></a></td>
+			#if (!$hasLiked)
+    		<td>&nbsp;<a href="#" title="$likeUserList">$likeCount</a> of your peers #if( $likeCount == 
+1)likes#{else}like#end this.</td>
+			#else
+    		<td><span class="liked"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and <a href="#" title="$likeUserList">$likeCount #if( $likeCount == 1)other#{else}others#end</a> like this.</span></td>
+			#end
+
 		</tr>
 	</table>
 </div>
-#else
-<div class="helpful ranked">
-	<table>
-		<tr>
-    		<td><span class="liked"><strong>You</strong> and <a href="#" title="$rankingUsers">$rankingCount #if( $rankingCount == 1)other#{else}others#end</a> like this. <a href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;useful=false">Unlike</a></span></td>
-		</tr>
-	</table>
-</div>
-#end
 
 #requireResource("confluence.web.resources:jquery")
 

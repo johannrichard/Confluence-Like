@@ -40,7 +40,16 @@
             </action>
         </package>
     </xwork>
+	<resource name="likegrey.png" type="download" location="images/likegrey.png">
+		<property key="content-type" value="image/png"/>
+	</resource>
+	<resource name="dislikegrey.png" type="download" location="images/dislikegrey.png">
+		<property key="content-type" value="image/png"/>
+	</resource>
 	<resource name="like.png" type="download" location="images/like.png">
+		<property key="content-type" value="image/png"/>
+	</resource>
+	<resource name="dislike.png" type="download" location="images/dislike.png">
 		<property key="content-type" value="image/png"/>
 	</resource>
 </atlassian-plugin>

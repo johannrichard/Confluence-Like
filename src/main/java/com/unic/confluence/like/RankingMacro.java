@@ -45,11 +45,15 @@ public class RankingMacro extends BaseMacro {
         Map<String, Object> velocityContext = MacroUtils.defaultVelocityContext();
         // TODO: check this works
 		boolean hasRanked = getStatProLoginManager().hasRanked( page );
+		boolean hasLiked = getStatProLoginManager().hasLiked( page );
+		boolean hasDisliked = getStatProLoginManager().hasDisliked( page );
         velocityContext.put("hasRanked", hasRanked);
-		int rankingCount = getStatProLoginManager().rankingCount( page );
+        velocityContext.put("hasLiked", hasLiked);
+        velocityContext.put("hasDisliked", hasDisliked);
+		int likeCount = getStatProLoginManager().likeCount( page );
 		// Make sure we don't count our vote if we hadn't ranked before
-		velocityContext.put("rankingCount", hasRanked ? rankingCount -1 : rankingCount);
-		velocityContext.put("rankingUsers", getStatProLoginManager().rankingUsers( page ));
+		velocityContext.put("likeCount", hasLiked ? likeCount -1 : likeCount);
+		velocityContext.put("likeUserList", getStatProLoginManager().likeUserList( page ));
         velocityContext.put("pageId", page.getIdAsString());
         return VelocityUtils.getRenderedTemplate("/templates/ranking/ranking.vm", velocityContext);
     }

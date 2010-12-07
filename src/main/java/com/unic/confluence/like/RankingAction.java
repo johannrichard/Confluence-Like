@@ -9,6 +9,8 @@ public class RankingAction extends AbstractPageAction {
     private StatProRankingManager manager;
     private boolean ajax;
     private boolean useful;
+    private boolean like;
+    private boolean dislike;
     private String feedback;
 
     // Components
@@ -34,6 +36,14 @@ public class RankingAction extends AbstractPageAction {
         this.useful = useful;
     }
 
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    public void setDislike(boolean dislike) {
+        this.dislike = dislike;
+    }
+
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
@@ -45,11 +55,7 @@ public class RankingAction extends AbstractPageAction {
         if (AuthenticatedUserThreadLocal.getUser() == null) return SUCCESS;
         // Record the value
         StatProRankingManager manager = getStatProLoginManager();
-        manager.rankContent(getPage(), useful);
-        // Do I have any feedback?
-        if (TextUtils.stringSet( feedback )) {
-            manager.sendFeedback(getPage(), feedback);
-        }
+        manager.rankContent(getPage(), like, dislike);
         // Success!
         return SUCCESS + (ajax ? "-xml" : "-redirect");
     }
