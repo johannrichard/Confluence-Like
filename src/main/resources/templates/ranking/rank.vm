@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>$!page.title</title>
+    </head>
+
+    #applyDecorator("root")
+        #decoratorParam("helper" $action.helper)
+        #decoratorParam("mode" "view")
+        #decoratorParam("context" "page")
+
+        <content tag="spacekey">$page.space.key</content>
+
+        <body>
+            <style type="text/css">
+                div.feedback {
+                    border: 1px solid;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 8%;
+                    margin-top: 10px;
+                #if ($useful)
+                    border-color: #009900;
+                    background-color: #ddffdd;
+                #else
+                    border-color: #CC0000;
+                    background-color: #FFCCCC;
+                #end
+                }
+
+                div.feedback form {
+                    margin-bottom: 0;
+                }
+
+                div.feedback form textarea {
+                    width: 100%;
+                    margin-bottom: 5px;
+                }
+            </style>
+
+            <div class="feedback">
+                <form action="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId" method="post">
+                    <input class="useful" type="hidden" name="useful" value="$useful"/>
+                    <label>
+                        You're about to rate this article. We would appreciate any feedback you have.<br/>
+                        <textarea name="feedback" rows="8" cols="80"></textarea>
+                    </label>
+                    <div class="buttons">
+                        <input type="submit" value="Submit" />
+                    </div>
+                </form>
+            </div>
+        </body>
+    #end
+
+</html>

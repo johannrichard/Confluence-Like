@@ -1,0 +1,110 @@
+<style type="text/css">
+	.helpful.unranked {
+		display: block;
+	}
+	
+    .helpful.unranked a img {
+        border: none;
+    }
+
+    .helpful.unranked .feedback {
+        border: 1px solid;
+        padding: 10px 10px 10px 10px;
+        margin: 0px 8%;
+        margin-top: 10px;
+    }
+
+    .helpful.unranked a {
+		text-decoration: none;	
+    }
+
+	.helpful.unranked a.button {
+		background-color: #ECEEF5;
+		border: 1px solid #CAD4E7;
+		border-bottom-left-radius: 3px 3px;
+		border-bottom-right-radius: 3px 3px;
+		border-top-left-radius: 3px 3px;
+		border-top-right-radius: 3px 3px;
+		display: block;
+		padding: 4px 5px;	
+		float: left;
+		cursor: pointer;
+		line-height: 1.2;
+		font-size: 11px;
+	}
+	
+	.helpful.unranked a .liketext {
+		color: #3B5998;
+		display: block;
+		padding-left: 17px;		
+		background: url($bootstrap.domainName/download/resources/com.adaptavist.confluence.ranking/like.png) no-repeat 0% -2px;
+	}
+	
+	.helpful.ranked .liked {
+		padding-left: 17px;		
+		background: url($bootstrap.domainName/download/resources/com.adaptavist.confluence.ranking/like.png) no-repeat 0% -2px;
+	}
+</style>
+
+#if (!$hasRanked)
+<div class="helpful unranked">
+	<table>
+		<tr>
+		    <td><a  class="button unliked" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;useful=true"><span class="liketext">Like</span></a>
+			</td>
+    		<td>&nbsp;<a href="#" title="$rankingUsers">$rankingCount</a> of your peers #if( $rankingCount == 1)likes#{else}like#end this.</td>
+		</tr>
+	</table>
+</div>
+#else
+<div class="helpful ranked">
+	<table>
+		<tr>
+    		<td><span class="liked"><strong>You</strong> and <a href="#" title="$rankingUsers">$rankingCount #if( $rankingCount == 1)other#{else}others#end</a> like this. <a href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;useful=false">Unlike</a></span></td>
+		</tr>
+	</table>
+</div>
+#end
+
+#requireResource("confluence.web.resources:jquery")
+
+<!-- Init -->
+<script type="text/javascript">
+    var $j = jQuery.noConflict();
+
+    $j(document).ready( function() {
+        // Feedback Status
+        var feedbackStatus = {};
+        // Attach feedback triggers to images
+        $j("div.helpful.unranked a").click( function () {
+            // Was helpful clicked?
+            var useful = $j("img", this)[0].alt == "yes";
+            $j("div.helpful.unranked div.feedback input.useful")[0].value = useful ? "true" : "false";
+            // Grab the div
+            var feedbackDiv = $j("div.helpful.unranked div.feedback");
+            // What to actually do
+            var displayFeedbackForm = function () {
+                // Colour the feedback div and show it
+                feedbackDiv.css('border-color', useful ? '#009900' : '#CC0000');
+                feedbackDiv.css('background-color', useful ? '#ddffdd' : '#FFCCCC');
+                if (feedbackStatus.clicked) feedbackDiv.fadeIn(); else feedbackDiv.slideDown();
+                feedbackStatus.helpful = useful;
+                feedbackStatus.clicked = true;
+            }
+            // Am I already showing?
+			/*
+            if (feedbackStatus.clicked) {
+                if (feedbackStatus.helpful != useful) feedbackDiv.fadeOut("normal", displayFeedbackForm);
+            } else displayFeedbackForm();
+			*/
+            // Stop the default action
+            // return false;
+        } );
+        // Attach cancel trigger
+        $j("div.helpful.unranked div.feedback div.buttons input.cancel").click( function () {
+            $j("div.helpful.unranked div.feedback").slideUp("normal", function () {
+                feedbackStatus.clicked = false;
+            });
+        } );
+    } );
+</script>

@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>StatPro Ranking Plugin - Configuration</title>
+</head>
+<body>
+#parse ( "/template/includes/actionerrors.vm" )
+<div align="center"><div style="width: 740px; text-align: left;">
+
+    <form action="config.action" method="post">
+        <input type="hidden" id="command" name="command" value="save"/>
+        <input type="hidden" id="spaceEmailCompound" name="spaceEmailCompound" value="$!spaceEmailCompound"/>
+
+        <!-- TODO -->
+        <div class="form-block">
+            <div class="form-element-large">Feedback Desintations</div>
+            <table class="confluenceTable" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th class="confluenceTh">Space Key</th>
+                        <th class="confluenceTh">Email Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach ($key in $config.spaceEmails.keySet())
+                    <tr>
+                        <td class="confluenceTd">
+                            <input class="spaceKey $velocityCount" count="$velocityCount" value="$!key"/>
+                        </td>
+                        <td class="confluenceTd">
+                            <input class="emailAddress $velocityCount" value="$!config.spaceEmails.get($key)"/>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="confluenceTd">
+                            <input class="spaceKey new" count="new" value=""/>
+                        </td>
+                        <td class="confluenceTd">
+                            <input class="emailAddress new" value=""/>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="form-buttons">
+            <input class="submit button" type="submit" value="Update"/>
+        </div>
+    </form>
+
+</div></div>
+
+#requireResource("confluence.web.resources:jquery")
+
+<!-- Init -->
+<script type="text/javascript">
+    var $j = jQuery.noConflict();
+
+    $j("input.submit.button").click( function () {
+        var compound = "";
+        // get each space key
+        var spaceKeys = $j("input.spaceKey");
+        for (var i=0; i<spaceKeys.length; i++) {
+            // Ignore empty space keys
+            if (spaceKeys[i].value) {
+                // Pad if needed
+                if (compound.length > 0) compound += ",";
+                // Append the space key
+                compound += spaceKeys[i].value +":"+
+                            $j("input.emailAddress."+ spaceKeys[i].getAttribute("count"))[0].value;
+            }
+        }
+        // Copy the compound in
+        $j("#spaceEmailCompound")[0].value = compound;
+    } );
+</script>
+
+</body>
+</html>

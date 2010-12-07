@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ranking-plugin</groupId>
+    <artifactId>ranking-plugin</artifactId>
+    <packaging>atlassian-plugin</packaging>
+
+    <name>Ranking Plugin</name>
+    <version>1.2.1</version>
+    <url>http://www.adaptavist.com/</url>
+    <description><![CDATA[
+        Provides a macro for ranking pages with a 'was this page useful' style approach, tracking only positive answers - also providing a text box to allow users to supply a comment (regardless of positive or negative feedback) which is emailed to an address specified in the configuration.
+
+        Provides a macro for listing the top ranked pages within a space based on the positive answers over the last 30 days.
+    ]]></description>
+
+    <properties>
+        <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
+        <atlassian.plugin.key>com.adaptavist.confluence.ranking</atlassian.plugin.key>
+    </properties>
+
+    <organization>
+        <name>Adaptavist.com Ltd</name>
+        <url>http://www.adaptavist.com/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Dan Hardiker</name>
+            <organization>Adaptavist.com Ltd</organization>
+            <organizationUrl>http://www.adaptavist.com/</organizationUrl>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <!-- Confluence dependencies -->
+        <dependency>
+            <groupId>com.atlassian.confluence</groupId>
+            <artifactId>confluence</artifactId>
+            <version>3.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- JUnit is used to perform unit tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>atlassian-plugin.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>atlassian-plugin.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>atlassian-pdk</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>atlassian-m2-repository</id>
+            <name>Atlassian Maven 2 Repository</name>
+            <url>http://repository.atlassian.com/maven2</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
