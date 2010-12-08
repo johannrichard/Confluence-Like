@@ -38,8 +38,8 @@
 	}
 
 	.helpful a.button.toggled {
-		background-color: #AAAAAA;
-		border-color: #777777;
+		background-color: #CCCCCC;
+		border-color: #AAAAAA;
 	}
 	
 	.helpful a .liketext {
@@ -72,10 +72,10 @@
 			</td>
 			<td><a class="button #if($hasDisliked)toggled#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasDisliked)like=true&amp;dislike=true#{else}like=false&amp;dislike=true#end"><span class="disliketext">&nbsp;</span></a></td>
 			#if (!$hasLiked)
-    		<td>&nbsp;<a href="#" title="$likeUserList">$likeCount</a> of your peers #if( $likeCount == 
-1)likes#{else}like#end this.</td>
+    		<td>&nbsp;<a id="likeUserTip" href="#" title="Click to expand">$likeCount</a><span id="likeUserList" style="display: none">$likeUserList</span> of your peers #if( $likeCount == 
+1)likes#{else}like#end this. $dislikeCount people dislike this.</td>
 			#else
-    		<td><span class="liked"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and <a href="#" title="$likeUserList">$likeCount #if( $likeCount == 1)other#{else}others#end</a> like this.</span></td>
+    		<td><span class="liked"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and <a id="likeUserTip" href="#" title="Click to expand">$likeCount #if( $likeCount == 1)other#{else}others#end</a><span id="likeUserList" style="display: none">$likeUserList</span> like this. $dislikeCount people dislike this.</span></td>
 			#end
 
 		</tr>
@@ -91,6 +91,13 @@
     $j(document).ready( function() {
         // Feedback Status
         var feedbackStatus = {};
+		// Attach showing the list of likers
+		$j("#likeUserTip").click( function () {
+			$j("#likeUserTip").fadeOut();
+			$j("#likeUserList").fadeIn();
+			return false;
+		} ); 
+		
         // Attach feedback triggers to images
         $j("div.helpful.unranked a").click( function () {
             // Was helpful clicked?

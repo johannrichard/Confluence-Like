@@ -51,8 +51,10 @@ public class RankingMacro extends BaseMacro {
         velocityContext.put("hasLiked", hasLiked);
         velocityContext.put("hasDisliked", hasDisliked);
 		int likeCount = getStatProLoginManager().likeCount( page );
+		int dislikeCount = getStatProLoginManager().dislikeCount( page );
 		// Make sure we don't count our vote if we hadn't ranked before
 		velocityContext.put("likeCount", hasLiked ? likeCount -1 : likeCount);
+		velocityContext.put("dislikeCount", dislikeCount);
 		velocityContext.put("likeUserList", getStatProLoginManager().likeUserList( page ));
         velocityContext.put("pageId", page.getIdAsString());
         return VelocityUtils.getRenderedTemplate("/templates/ranking/ranking.vm", velocityContext);

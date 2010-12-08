@@ -149,6 +149,7 @@ public class StatProRankingManager {
 	
 	public String likeUserList(AbstractPage page) {
         String spaceKey = page.getSpaceKey();
+ 		String authenticatedUser = AuthenticatedUserThreadLocal.getUsername();
         // Get the dataset for this space
         StatProRankingData data = getData(spaceKey, true);
         StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
@@ -171,8 +172,16 @@ public class StatProRankingManager {
 			} else {
 				userFullName = username;
 			}
-	        builder.append( userFullName );
-			first = false;
+			if(( authenticatedUser == username && !hasLiked(page) ) || authenticatedUser != username ) {
+				builder.append( "<a class=\"confluence-userlink username:" );
+				builder.append( username );
+				builder.append( " url fn\" href=\"/display/~" );
+				builder.append( username );
+				builder.append( "\"><strong>" );
+		        builder.append( userFullName );
+				builder.append( "</strong></a>" );
+				first = false;
+			}
 	    }
 	    return builder.toString();
 	}
@@ -188,6 +197,19 @@ public class StatProRankingManager {
             data.getEntities().put(page.getId(), dataSet);
         }
         return dataSet.getPositive().size();
+    }
+
+    public int dislikeCount(AbstractPage page) {
+        String spaceKey = page.getSpaceKey();
+        // Get the dataset for this space
+        StatProRankingData data = getData(spaceKey, true);
+        StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
+        if (dataSet == null) {
+            dataSet = new StatProRankingDataSet();
+            dataSet.setEntityId( page.getId() );
+            data.getEntities().put(page.getId(), dataSet);
+        }
+        return dataSet.getNegative().size();
     }
 
     public boolean hasRanked(AbstractPage page) {
