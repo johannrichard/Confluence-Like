@@ -149,7 +149,7 @@ public class StatProRankingManager {
 	
 	public String likeUserList(AbstractPage page) {
         String spaceKey = page.getSpaceKey();
- 		String authenticatedUser = AuthenticatedUserThreadLocal.getUsername();
+ 		String authenticatedUser = AuthenticatedUserThreadLocal.getUsername().toLowerCase();
         // Get the dataset for this space
         StatProRankingData data = getData(spaceKey, true);
         StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
@@ -161,10 +161,8 @@ public class StatProRankingManager {
 
 	    StringBuilder builder = new StringBuilder();
 		boolean first = true;
+		int c = dataSet.getPositive().size();
 		for (String username : dataSet.getPositive().keySet()) {
-			if( !first ) {
-				builder.append( ", " );		        
-			}
 			String userFullName = new String();
 			User user = userAccessor.getUser( username.toLowerCase() );
 			if (user != null ) {
@@ -172,7 +170,12 @@ public class StatProRankingManager {
 			} else {
 				userFullName = username;
 			}
-			if(( authenticatedUser == username && !hasLiked(page) ) || authenticatedUser != username ) {
+			if( !authenticatedUser.equals( username.toLowerCase()) ) {
+				if( !first && c > 1) {
+					builder.append( ", " );		        
+				} else if( !first ) {
+					builder.append( " and " );
+				}
 				builder.append( "<a class=\"confluence-userlink username:" );
 				builder.append( username );
 				builder.append( " url fn\" href=\"/display/~" );
@@ -180,8 +183,12 @@ public class StatProRankingManager {
 				builder.append( "\"><strong>" );
 		        builder.append( userFullName );
 				builder.append( "</strong></a>" );
+				builder.append( "<!-- c:" );
+				builder.append( c );
+				builder.append( " -->");
 				first = false;
 			}
+			c--;
 	    }
 	    return builder.toString();
 	}

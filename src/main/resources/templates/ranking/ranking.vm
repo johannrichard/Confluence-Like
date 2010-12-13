@@ -68,16 +68,10 @@
 <div class="helpful">
 	<table>
 		<tr>
-		    <td><a  class="button #if($hasLiked)toggled#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasLiked)like=true&amp;dislike=true#{else}like=true&amp;dislike=false#end"><span class="liketext">Like</span></a>
+		    <td><a id="like" class="button #if($hasLiked)toggled#{else}like#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasLiked)like=true&amp;dislike=true#{else}like=true&amp;dislike=false#end"><span class="liketext">Like</span></a>
 			</td>
-			<td><a class="button #if($hasDisliked)toggled#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasDisliked)like=true&amp;dislike=true#{else}like=false&amp;dislike=true#end"><span class="disliketext">&nbsp;</span></a></td>
-			#if (!$hasLiked)
-    		<td>&nbsp;<a id="likeUserTip" href="#" title="Click to expand">$likeCount</a><span id="likeUserList" style="display: none">$likeUserList</span> of your peers #if( $likeCount == 
-1)likes#{else}like#end this. $dislikeCount people dislike this.</td>
-			#else
-    		<td><span class="liked"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and <a id="likeUserTip" href="#" title="Click to expand">$likeCount #if( $likeCount == 1)other#{else}others#end</a><span id="likeUserList" style="display: none">$likeUserList</span> like this. $dislikeCount people dislike this.</span></td>
-			#end
-
+			<td><a class="button #if($hasDisliked)toggled#{else}dislike#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasDisliked)like=true&amp;dislike=true#{else}like=false&amp;dislike=true#end"><span class="disliketext">&nbsp;</span></a></td>
+    		<td><span id="youlike" style="display: #if($hasLiked)visible#{else}none#end"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and </span><a id="likeUserTip" href="#" title="Click to expand">$likeCount #if( $likeCount == 1)other#{else}others#end</a><span id="likeUserList" style="display: none">$likeUserList</span> like this. $dislikeCount people dislike this. <span id="update" style="display: none">Updating ...</span></td>
 		</tr>
 	</table>
 </div>
@@ -93,41 +87,52 @@
         var feedbackStatus = {};
 		// Attach showing the list of likers
 		$j("#likeUserTip").click( function () {
-			$j("#likeUserTip").fadeOut();
-			$j("#likeUserList").fadeIn();
+			$j("#likeUserTip").hide();
+			$j("#likeUserList").show();
 			return false;
 		} ); 
 		
+		// Attach feedback trigers to dislike & Co.
+		
         // Attach feedback triggers to images
-        $j("div.helpful.unranked a").click( function () {
+        $j("#like.like").click( function () {
             // Was helpful clicked?
-            var useful = $j("img", this)[0].alt == "yes";
-            $j("div.helpful.unranked div.feedback input.useful")[0].value = useful ? "true" : "false";
-            // Grab the div
-            var feedbackDiv = $j("div.helpful.unranked div.feedback");
-            // What to actually do
-            var displayFeedbackForm = function () {
-                // Colour the feedback div and show it
-                feedbackDiv.css('border-color', useful ? '#009900' : '#CC0000');
-                feedbackDiv.css('background-color', useful ? '#ddffdd' : '#FFCCCC');
-                if (feedbackStatus.clicked) feedbackDiv.fadeIn(); else feedbackDiv.slideDown();
-                feedbackStatus.helpful = useful;
-                feedbackStatus.clicked = true;
-            }
-            // Am I already showing?
-			/*
-            if (feedbackStatus.clicked) {
-                if (feedbackStatus.helpful != useful) feedbackDiv.fadeOut("normal", displayFeedbackForm);
-            } else displayFeedbackForm();
-			*/
-            // Stop the default action
-            // return false;
-        } );
-        // Attach cancel trigger
-        $j("div.helpful.unranked div.feedback div.buttons input.cancel").click( function () {
-            $j("div.helpful.unranked div.feedback").slideUp("normal", function () {
-                feedbackStatus.clicked = false;
-            });
+			// TODO: 
+			//  * Use Ajax for clicks
+			//  * Use Ajax for status
+			$j("#update").show();
+			try 
+			{	
+				var href = $j(this).attr("href");
+				AJS.safe.ajax( {
+					url: href,
+					type: "GET",
+			        dataType: "xml",
+					data: { 
+						"ajax": "true"
+						}, 
+		            success: function(data) {
+						$j("#youlike").show();
+						$j("#update").hide();
+						AJS.safe.ajax( {
+							url: contextPath + "/status/update.action",
+					        type: "POST",
+					        dataType: "json",
+					        data: {
+					            "text": "likes ${pageWikiLink}" 
+					        }
+					    } );
+		            },
+		            error: function(xhr, text, error) {
+		                AJS.log("Error liking page: " + text);
+		                AJS.log(error);
+	            	}
+				} );
+			} catch (err) {
+				AJS.log("Error: " + err);
+				return true;
+			}
+            return false;
         } );
     } );
 </script>
