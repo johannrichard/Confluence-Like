@@ -71,7 +71,7 @@
 		    <td><a id="like" class="button #if($hasLiked)toggled#{else}like#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasLiked)like=true&amp;dislike=true#{else}like=true&amp;dislike=false#end"><span class="liketext">Like</span></a>
 			</td>
 			<td><a class="button #if($hasDisliked)toggled#{else}dislike#end" href="$req.contextPath/statpro-ranking/rankMe.action?pageId=$pageId&amp;#if($hasDisliked)like=true&amp;dislike=true#{else}like=false&amp;dislike=true#end"><span class="disliketext">&nbsp;</span></a></td>
-    		<td><span id="youlike" style="display: #if($hasLiked)visible#{else}none#end"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and </span><a id="likeUserTip" href="#" title="Click to expand">$likeCount #if( $likeCount == 1)other#{else}others#end</a><span id="likeUserList" style="display: none">$likeUserList</span> like this. $dislikeCount people dislike this. <span id="update" style="display: none">Updating ...</span></td>
+    		<td><span id="youlike" style="display: #if($hasLiked)visible#{else}none#end"><strong><a class="confluence-userlink username:${req.userPrincipal.name} url fn" href="$req.contextPath/display/~${req.userPrincipal.name}">You</a></strong> and </span><a id="likeUserTip" href="#" title="Click to expand">$likeCount #if( $likeCount == 1)other#{else}others#end</a><span id="likeUserList" style="display: none">$likeUserList</span> like this. <a id="dislikeUserTip" href="#" title="Click to expand">$dislikeCount </a><span id="dislikeUserList" style="display: none">$dislikeUserList</span> #if( $dislikeCount == 1)dislikes#{else}dislike#end this. <span id="update" style="display: none">Updating ...</span></td>
 		</tr>
 	</table>
 </div>
@@ -92,10 +92,14 @@
 			return false;
 		} ); 
 		
-		// Attach feedback trigers to dislike & Co.
-		
+		$j("#dislikeUserTip").click( function () {
+			$j("#dislikeUserTip").hide();
+			$j("#dislikeUserList").show();
+			return false;
+		} ); 
+
         // Attach feedback triggers to images
-        $j("#like.like").click( function () {
+        $j("#like.like").live("click", function () {
             // Was helpful clicked?
 			// TODO: 
 			//  * Use Ajax for clicks
@@ -103,7 +107,8 @@
 			$j("#update").show();
 			try 
 			{	
-				var href = $j(this).attr("href");
+				var target = $j(this);
+				var href = target.attr("href");
 				AJS.safe.ajax( {
 					url: href,
 					type: "GET",
@@ -112,8 +117,12 @@
 						"ajax": "true"
 						}, 
 		            success: function(data) {
-						$j("#youlike").show();
 						$j("#update").hide();
+						$j("#youlike").show();
+						$j(target).removeClass("like").addClass("toggled");
+						
+						/****
+						 * Removed: too intrusive for most
 						AJS.safe.ajax( {
 							url: contextPath + "/status/update.action",
 					        type: "POST",
@@ -122,6 +131,7 @@
 					            "text": "likes ${pageWikiLink}" 
 					        }
 					    } );
+						*/ 
 		            },
 		            error: function(xhr, text, error) {
 		                AJS.log("Error liking page: " + text);

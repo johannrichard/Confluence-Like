@@ -28,11 +28,12 @@ import java.util.*;
 
 public class StatProRankingManager {
 
+    protected final static String bandanaKey = "com.unic.confluence.like.LikeManager";
+
     private static final Logger log = Logger.getLogger( StatProRankingManager.class );
     private static final int EXPIRY_IN_DAYS = 30;
     private static final int TOP_COUNT = 5;
     private static BandanaContext bandanaContext = new ConfluenceBandanaContext();
-    private static String bandanaKey = "com.unic.confluence.like.LikeManager";
 
     private BandanaManager bandanaManager;
     private PageManager pageManager;
@@ -206,7 +207,51 @@ public class StatProRankingManager {
         return dataSet.getPositive().size();
     }
 
-    public int dislikeCount(AbstractPage page) {
+	public String dislikeUserList(AbstractPage page) {
+        String spaceKey = page.getSpaceKey();
+ 		String authenticatedUser = AuthenticatedUserThreadLocal.getUsername().toLowerCase();
+        // Get the dataset for this space
+        StatProRankingData data = getData(spaceKey, true);
+        StatProRankingDataSet dataSet = data.getEntities().get( page.getId() );
+        if (dataSet == null) {
+            dataSet = new StatProRankingDataSet();
+            dataSet.setEntityId( page.getId() );
+            data.getEntities().put(page.getId(), dataSet);
+        }
+
+	    StringBuilder builder = new StringBuilder();
+		boolean first = true;
+		int c = dataSet.getPositive().size();
+		for (String username : dataSet.getNegative().keySet()) {
+			String userFullName = new String();
+			User user = userAccessor.getUser( username.toLowerCase() );
+			if (user != null ) {
+				userFullName = user.getFullName();
+			} else {
+				userFullName = username;
+			}
+			if( !first && c > 1) {
+				builder.append( ", " );		        
+			} else if( !first ) {
+				builder.append( " and " );
+			}
+			builder.append( "<a class=\"confluence-userlink username:" );
+			builder.append( username );
+			builder.append( " url fn\" href=\"/display/~" );
+			builder.append( username );
+			builder.append( "\"><strong>" );
+	        builder.append( userFullName );
+			builder.append( "</strong></a>" );
+			builder.append( "<!-- c:" );
+			builder.append( c );
+			builder.append( " -->");
+			first = false;
+			c--;
+	    }
+	    return builder.toString();
+	}
+	
+	public int dislikeCount(AbstractPage page) {
         String spaceKey = page.getSpaceKey();
         // Get the dataset for this space
         StatProRankingData data = getData(spaceKey, true);

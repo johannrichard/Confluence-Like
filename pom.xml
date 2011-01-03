@@ -8,14 +8,14 @@
     <packaging>atlassian-plugin</packaging>
 
     <name>Like Plugin</name>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
     <url>http://www.unic.com/</url>
     <description><![CDATA[
         Provides a macro for ranking pages with a 'Like' style approach, tracking only positive answers.
 
         Provides a macro for listing the top ranked pages within a space based on the positive answers over the last 30 days.
 
-		Is based on the Adaptavis "Ranking" plugin (http://www.adaptavist.com/).
+		It is heavily based on the Adaptavist "Ranking" plugin (http://www.adaptavist.com/).
     ]]></description>
 
     <properties>
@@ -54,6 +54,11 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+		  	<groupId>org.randombits.confluence</groupId>
+		  	<artifactId>confluence-supplier</artifactId>
+		  	<version>3.1.2</version>
+		</dependency>
     </dependencies>
 
     <build>

@@ -52,4 +52,11 @@
 	<resource name="dislike.png" type="download" location="images/dislike.png">
 		<property key="content-type" value="image/png"/>
 	</resource>
+	
+	<web-item key="like_comment" name="Like a comment" section="ystem.comment.action/primary" weight="10">
+        <description key="item.google.home.desc">Simple link to google.com.</description>
+        <label key="item.google.home.label" />
+        <link linkId="google_home">http://google.com</link>
+    </web-item>
+    
 </atlassian-plugin>
