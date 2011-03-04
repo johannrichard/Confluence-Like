@@ -3,15 +3,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ranking-plugin</groupId>
-    <artifactId>ranking-plugin</artifactId>
+    <groupId>like-plugin</groupId>
+    <artifactId>like-plugin</artifactId>
     <packaging>atlassian-plugin</packaging>
 
     <name>Like Plugin</name>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <url>http://www.unic.com/</url>
     <description><![CDATA[
-        Provides a macro for ranking pages with a 'Like' style approach, tracking only positive answers.
+        Provides a macro for ranking pages with a 'Like' style approach, tracking  positive and negative answers.
 
         Provides a macro for listing the top ranked pages within a space based on the positive answers over the last 30 days.
 

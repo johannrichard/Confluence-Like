@@ -80,7 +80,7 @@
 
 <!-- Init -->
 <script type="text/javascript">
-    var $j = jQuery.noConflict();
+    var $j = jQuery;
 
     $j(document).ready( function() {
         // Feedback Status
