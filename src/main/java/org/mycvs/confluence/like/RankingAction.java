@@ -1,4 +1,4 @@
-package com.unic.confluence.like;
+package org.mycvs.confluence.like;
 
 import com.atlassian.confluence.pages.actions.AbstractPageAction;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
