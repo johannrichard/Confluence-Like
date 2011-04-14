@@ -46,22 +46,22 @@
 		color: #333333;
 		display: block;
 		padding-left: 17px;		
-		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/like.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/org.mycvs.confluence.like/like.png) no-repeat 0% -2px;
 	}
 	
 	.helpful a .disliketext {
 		color: #333333;
 		display: block;
 		padding-left: 15px;		
-		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/dislike.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/org.mycvs.confluence.like/dislike.png) no-repeat 0% -2px;
 	}
 
 	.helpful a.button.toggled .liketext {
-		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/likegrey.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/org.mycvs.confluence.like/likegrey.png) no-repeat 0% -2px;
 	}
 	
 	.helpful a.button.toggled .disliketext {
-		background: url($bootstrap.domainName/download/resources/com.unic.confluence.like/dislikegrey.png) no-repeat 0% -2px;
+		background: url($bootstrap.domainName/download/resources/org.mycvs.confluence.like/dislikegrey.png) no-repeat 0% -2px;
 	}
 </style>
 

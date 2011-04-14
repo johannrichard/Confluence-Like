@@ -1,4 +1,4 @@
-package com.unic.confluence.like;
+package org.mycvs.confluence.like;
 
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;

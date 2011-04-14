@@ -1,4 +1,4 @@
-package com.unic.confluence.like;
+package org.mycvs.confluence.like;
 
 import java.util.HashMap;
 import java.util.Map;

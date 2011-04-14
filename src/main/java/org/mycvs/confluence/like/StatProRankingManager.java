@@ -1,4 +1,4 @@
-package com.unic.confluence.like;
+package org.mycvs.confluence.like;
 
 import com.atlassian.bandana.BandanaContext;
 import com.atlassian.bandana.BandanaManager;
@@ -28,7 +28,7 @@ import java.util.*;
 
 public class StatProRankingManager {
 
-    protected final static String bandanaKey = "com.unic.confluence.like.LikeManager";
+    protected final static String bandanaKey = "org.mycvs.confluence.like.LikeManager";
 
     private static final Logger log = Logger.getLogger( StatProRankingManager.class );
     private static final int EXPIRY_IN_DAYS = 30;
